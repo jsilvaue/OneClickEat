@@ -73,10 +73,43 @@ const _template = (r) => `
 </div>
 `;
 let coordinates = null;
-function viewDirections() {
-    alert(coordinates);
-    window.location.replace(`https://www.google.com/maps/place/@${coordinates}`);
+let directions = null;
+let userLocation = [];
+function displayRoute(position) {
+    userLocation = [position.coords.longitude, position.coords.latitude];
+    console.log("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude, typeof position.coords.latitude);
+    let intCoords = `${coordinates}`.split(",");
+    intCoords = [parseInt(intCoords[0], parseInt(intCoords[1]))];
+    directions.setOrigin([position.coords.longitude, position.coords.latitude]);
+    directions.setDestination(intCoords);
 }
+function askUserForLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(displayRoute);
+    } else {
+        alert("O seu dispositivo não tem GPS!");
+    }
+}
+function viewDirections() {
+
+    $("#view-map-modal").modal('show');
+    directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken
+    });
+    map.addControl(
+        directions,
+        'top-left');
+
+    askUserForLocation();
+
+    // directions.setDestination(intCoords);
+    // move the attribution control out of the way
+
+    // create the initial directions object, from which the layer
+    // and inputs will pull data.
+
+}
+var map = null;
 let restaurant = {};
 
 function emitBookingOrder() {
@@ -99,7 +132,6 @@ function emitBookingOrder() {
         client_phone: phone,
         client_email: email
     };
-    console.log("Request ::: ", request);
     //Send Booking
     fetch(_base_api_url + "/bookings", { mode: "cors", method: "POST", body: JSON.stringify(request), headers: new Headers({ 'content-type': 'application/json' }) }).then((res) => {
         alert("Success on Booking!", res);
@@ -113,6 +145,12 @@ function emitBookingOrder() {
 }
 
 window.onload = () => {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2Fsb25zYSIsImEiOiJja2FwZGo4Z2YxY3FsMnJxbTM4cmVtM2o5In0.lyOdXb_yGEv44glMXihvwA';
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11'
+    });
     //Get ID of Restaurant and fetch all other informations
     const _location = window.location;
     const _params = _location.search;
