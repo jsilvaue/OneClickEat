@@ -8,8 +8,12 @@ router.get('/', restaurant_tableController.findAll);
 // Create a new restaurant_table
 router.post('/', restaurant_tableController.create);
 
+// Retrieves all tables of a restaurant with id
+router.get('/restaurant/:id', restaurant_tableController.getRestaurantTables);
+
 // Retrieve a single restaurant_table with id
 router.get('/:id', restaurant_tableController.findById);
+
 
 // Update a restaurant_table with id
 router.put('/:id', restaurant_tableController.update);

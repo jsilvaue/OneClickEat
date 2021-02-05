@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const bookingController = require('../controllers/bookings.controller');
-
+const bodyParser = require("body-parser");
 // Retrieve all bookings
 router.get('/', bookingController.findAll);
 
 // Create a new booking
-router.post('/', bookingController.create);
+router.post('/', bodyParser.json(), bookingController.create);
 
 // Retrieve a single booking with id
 router.get('/:id', bookingController.findById);

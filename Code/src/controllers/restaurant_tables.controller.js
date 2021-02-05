@@ -32,6 +32,14 @@ exports.findById = async function (req, res) {
         return res.status(401).json({ status: 401, message: 'Failed to fetch item', error: { code: "operation_failed", message: e } });
     }
 };
+exports.getRestaurantTables = async function (req, res) {
+    try {
+        let response = await RestaurantTable.getRestaurantTables(req.params.id);
+        return res.status(200).json({ message: "Items fetched!", response, status: 200 })
+    } catch (e) {
+        return res.status(401).json({ status: 401, message: 'Failed to fetch items', error: { code: "operation_failed", message: e } });
+    }
+};
 
 
 exports.update = async function (req, res) {

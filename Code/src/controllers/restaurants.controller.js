@@ -10,6 +10,19 @@ exports.findAll = async function (req, res) {
     }
 
 };
+exports.search = async function (req, res) {
+    try {
+        if (req.params.search === '-' && req.params.location === '-') {
+            res.redirect('/api/restaurants');
+        }
+        let response = await Restaurants.search(req.params.search, req.params.location);
+        return res.status(200).json({ message: "Array<Items> returned successfully!", response, status: 200 })
+    } catch (e) {
+        console.log("Failure Search ::: ", req.params, e);
+        return res.status(401).json({ status: 401, message: 'Failed to return list of items', error: { code: "operation_failed", message: e } });
+    }
+
+};
 
 
 exports.create = async function (req, res) {

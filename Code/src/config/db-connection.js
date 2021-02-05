@@ -9,7 +9,8 @@ const connection = mysql.createConnection({
     password: 'ocfmaster',
     database: 'ocfmaster'
 });
-connection.connect(function (err) {
+connection.connect(function (err, args) {
+    console.log("Information on Arguments ::: ", JSON.stringify(args));
     try {
         if (err) throw err;
         console.log("Database Connected!");

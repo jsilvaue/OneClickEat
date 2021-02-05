@@ -4,8 +4,10 @@ const routes = {
     restaurant: require("./restaurants.routes"),
     restaurant_table: require("./restaurant_tables.routes"),
 }
-const express = require('express')
+const express = require('express');
+const bodyParser = require("body-parser");
 const router = express.Router();
+router.use(bodyParser.json());
 
 router.use('/bookings', routes.booking);
 router.use('/clients', routes.client);

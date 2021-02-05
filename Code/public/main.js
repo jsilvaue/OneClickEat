@@ -2,7 +2,7 @@
 var restaurant_template = (r) => `
 <div class=" col-md-4 col-sm-6">
 						<div class="single-explore-item">
-							<a href="./view-restaurant/index.html">
+							<a href="./pages/view-restaurant/index.html?id=${r.restaurant_id}&name=${r.title}">
 								<div class="single-explore-img">
 									<img src=${r.img1 || "assets/images/explore/e1.jpg"} alt="explore image" />
 									<div class="single-explore-img-info">
@@ -46,7 +46,7 @@ var restaurant_template = (r) => `
 										</div>
 										<div class="col-sm-10">
 											<p>
-												${r.information}
+												${r.information}...
 											</p>
 										</div>
 									</div>
@@ -72,7 +72,7 @@ var restaurant_template = (r) => `
 
 var mock_restaurants = [
     {
-        id: 1,
+        restaurant_id: 1,
         title: "Mc Donalds",
         address: "Porto, Aveiro da maral",
         coordinates: "-15.00231234,12.1482392",
@@ -90,7 +90,7 @@ var mock_restaurants = [
         updated_at: new Date().toUTCString(),
     },
     {
-        id: 2,
+        restaurant_id: 2,
         title: "Burger King",
         address: "Porto, Aveiro da maral",
         coordinates: "-15.00231234,12.1482392",
@@ -108,7 +108,7 @@ var mock_restaurants = [
         updated_at: new Date().toUTCString(),
     },
     {
-        id: 3,
+        restaurant_id: 3,
         title: "Pizza Hut",
         address: "Porto, Aveiro da maral",
         coordinates: "-15.00231234,12.1482392",
@@ -150,9 +150,11 @@ window.onload = () => {
     //Get Restaurants On Load
     fetch(_base_api_url + "/restaurants/").then(res => res.json()).then((response) => {
         let template = "";
-        let list = response.response;
+        let list = [...response.response];
+        list = list.slice(0, 9);
         list.forEach((item) => {
-            template += restaurant_template(item)
+            item["information"] = `${item.information}`.slice(0, 60);
+            template += restaurant_template(item);
         });
         document.getElementById("view-restaurants-list-home").innerHTML = template;
     }).catch((error) => {
@@ -169,3 +171,10 @@ window.onload = () => {
     });
 
 } //!-Get location of the user on load of pagev
+
+const search_data = {};
+function searchResults() {
+    search_data["search"] = document.getElementById("search-input").value.toLowerCase();
+    search_data["location"] = document.getElementById("location-input").value.toLowerCase();
+    window.location.replace(`./pages/search/index.html?search=${search_data.search}&location=${search_data.location}`);
+}

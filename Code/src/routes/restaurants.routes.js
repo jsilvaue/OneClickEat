@@ -5,6 +5,9 @@ const restaurantController = require('../controllers/restaurants.controller');
 // Retrieve all restaurants
 router.get('/', restaurantController.findAll);
 
+// Search restaurants
+router.get('/search/:search/:location', restaurantController.search);
+
 // Create a new restaurant
 router.post('/', restaurantController.create);
 
