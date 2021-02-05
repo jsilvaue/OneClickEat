@@ -79,8 +79,10 @@ function displayRoute(position) {
     userLocation = [position.coords.longitude, position.coords.latitude];
     console.log("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude, typeof position.coords.latitude);
     let intCoords = `${coordinates}`.split(",");
-    intCoords = [parseInt(intCoords[0], parseInt(intCoords[1]))];
+    console.log("Int Coords Unsplitted ::: ", intCoords);
+    intCoords = [parseFloat(intCoords[0]), parseFloat(intCoords[1])];
     directions.setOrigin([position.coords.longitude, position.coords.latitude]);
+    console.log("Int Coords ", coordinates, intCoords);
     directions.setDestination(intCoords);
 }
 function askUserForLocation() {
